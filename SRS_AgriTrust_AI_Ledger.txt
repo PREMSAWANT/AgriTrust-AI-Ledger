@@ -1,0 +1,88 @@
+================================================================================
+PROJECT: AgriTrust AI-Ledger (MERN + React Native + Ethereum)
+DOCUMENT: Short Software Requirements Specification (SRS) & Project Overview
+================================================================================
+
+1. PROJECT OVERVIEW
+-------------------
+AgriTrust AI-Ledger is a decentralized supply chain solution for the 
+agricultural industry. It leverages the MERN stack for core web services, 
+React Native for mobile access, and Ethereum Smart Contracts for immutable 
+product provenance. The platform uses AI to generate trust scores, ensuring 
+food safety and transparency from farm to fork. (Software-Only Prototype Focus)
+
+2. TECHNOLOGY STACK
+-------------------
+- Frontend (Web Dashboard): React.js
+- Frontend (Mobile App): React Native (Expo)
+- Backend: Node.js, Express.js
+- Database: MongoDB (Atlas)
+- Blockchain: Ethereum (Solidity, Hardhat, Ethers.js)
+- Storage: IPFS (via Web3.storage or Pinata)
+- Authentication: JWT & Bcrypt
+- Other: QRCode.js, ethers.js, Chart.js (for analytics)
+
+3. USER ROLES & RESPONSIBILITIES
+--------------------------------
+A. Farmer (Web/Mobile):
+   - Registers profile and farm details.
+   - Logs harvest batches and generates Blockchain-linked QR codes.
+   - Views trust analytics for their batches.
+
+B. Distributor (Mobile):
+   - Scans batches at handoff points.
+   - Logs simulated environmental data (Temp/Humidity) to the system.
+   - Updates batch status (In-Transit, Delivered).
+
+C. Consumer (Mobile):
+   - Scans QR codes to verify provenance.
+   - Reviews product and "rates" the farmer on-chain.
+
+D. Admin (Web):
+   - Verifies users and manages the simulated IoT alert thresholds.
+   - Monitors transaction logs and smart contract health.
+
+4. WORKFLOW (SOFTWARE SIMULATION)
+---------------------------------
+1. Data Entry: Software captures harvest metadata.
+2. AI Evaluation: Backend logic assigns a Trust Score based on data consistency.
+3. Blockchain Anchoring: Meta-data hash is stored on-chain for immutability.
+4. QR Logic: QR codes link directly to the specific Blockchain Transaction ID.
+5. Tracking: Each "scan" by a distributor creates a new history entry in the DB.
+6. Verification: Consumer app fetches data from BOTH the DB and the Blockchain 
+   to cross-verify that no data was tampered with.
+
+5. PROJECT STRUCTURE
+--------------------
+AgriTrust-AI-Ledger/
+├── backend/            # MERN API (Node/Express/MongoDB)
+├── web_dashboard/      # React.js Admin & Farmer Portal
+├── frontend/           # React Native Android/iOS Consumer App
+└── blockchain/         # Hardhat Solidity Environment
+
+6. 20 MAJOR SOFTWARE ENHANCEMENTS (FOR UNIQUENESS)
+--------------------------------------------------
+1.  IPFS Asset Storage: Off-chain storage for product images/certificates.
+2.  Simulated IoT Dashboard: Dashboard to visualize "Mock" sensor data for demo.
+3.  Smart Contract Escrow: Code logic that unlocks payments upon scanning.
+4.  NFT Batch Representation: Each crop batch minted as a unique ERC-721 token.
+5.  Trust Token Economy: Reward consumers with tokens for scanning and reviews.
+6.  Dynamic QR Routing: Software-side logic to redirect QR scans if a batch is flagged.
+7.  AI Fraud Detection: Algorithm to find duplicate or suspicious scans.
+8.  Digital Twin Visualization: 3D or graphical representation of the batch journey.
+9.  Multi-Sig Admin Approval: Requires two admins to verify a new farmer on-chain.
+10. Batch Genealogy: Visual tree showing how batches split or merge in the system.
+11. Historical Price Analytics: Interactive charts predicting crop price trends.
+12. Zero-Knowledge "Organic" Proof: Prove organic status without leaking farm IDs.
+13. Voice-to-Data Entry: Integrated voice recognition for easier field logging.
+14. Automated Recall Trigger: Logic that auto-emails all buyers if a batch is flagged.
+15. Carbon Footprint Estimator: Logic-based calculation of shipping CO2 impact.
+16. Geofencing Simulation: Software alerts if a product scan occurs outside expected zones.
+17. Biometric Mock-Auth: Using mobile Biometric APIs for secure software login.
+18. Smart Insurance Oracle: Simulated payouts for "crop failure" based on API data.
+19. Multi-Language UI: Localization for global agricultural markets.
+20. Premium Glassmorphic UI: High-end aesthetic for a professional "SaaS" feel.
+
+================================================================================
+END OF DOCUMENT
+================================================================================
