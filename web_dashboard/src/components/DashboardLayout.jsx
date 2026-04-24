@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 const DashboardLayout = ({ children, role, userName }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -56,18 +56,33 @@ const DashboardLayout = ({ children, role, userName }) => {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex font-sans text-slate-900">
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-[45] lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className={`bg-white border-r border-slate-100 flex flex-col transition-all duration-300 z-50 ${isSidebarOpen ? 'w-72' : 'w-24'}`}>
-        <div className="p-8 flex items-center gap-3 mb-10">
+      <aside className={`
+        fixed lg:relative
+        bg-white border-r border-slate-100 flex flex-col transition-all duration-500 z-50 h-full
+        ${isSidebarOpen ? 'w-72 translate-x-0' : 'w-0 lg:w-24 -translate-x-full lg:translate-x-0'}
+      `}>
+        <div className="p-8 flex items-center gap-3 mb-10 overflow-hidden">
           <img src="/favicon.png" alt="AgriTrust" className="w-10 h-10 shrink-0" />
-          {isSidebarOpen && <span className="text-xl font-black tracking-tighter uppercase">AgriTrust</span>}
+          {isSidebarOpen && <span className="text-xl font-black tracking-tighter uppercase whitespace-nowrap">AgriTrust</span>}
         </div>
 
-        <nav className="flex-1 px-4 space-y-2">
+        <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
           {currentNav.map((item) => (
             <button
               key={item.name}
-              onClick={() => navigate(item.path)}
+              onClick={() => {
+                navigate(item.path);
+                if (window.innerWidth < 1024) setIsSidebarOpen(false);
+              }}
               className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition-all ${
                 location.pathname === item.path 
                 ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200' 
@@ -75,7 +90,7 @@ const DashboardLayout = ({ children, role, userName }) => {
               }`}
             >
               <span className="shrink-0">{item.icon}</span>
-              {isSidebarOpen && <span>{item.name}</span>}
+              {isSidebarOpen && <span className="whitespace-nowrap">{item.name}</span>}
             </button>
           ))}
         </nav>
