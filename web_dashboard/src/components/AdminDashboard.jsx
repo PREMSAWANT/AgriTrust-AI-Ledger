@@ -14,9 +14,11 @@ import {
   Filter
 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { useNavigate } from 'react-router-dom';
 import { getBatches } from '../api';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,7 +63,10 @@ const AdminDashboard = () => {
              <button className="p-4 bg-white rounded-2xl border border-slate-100 text-slate-400 hover:text-emerald-600 transition-all">
                 <RefreshCw size={20} />
              </button>
-             <button className="btn-primary px-8 py-4 shadow-xl shadow-emerald-100 flex items-center gap-3">
+             <button 
+                onClick={() => navigate('/dashboard/admin/logs')}
+                className="btn-primary px-8 py-4 shadow-xl shadow-emerald-100 flex items-center gap-3"
+             >
                <ShieldCheck size={20} /> Audit System Logs
              </button>
           </div>
@@ -115,7 +120,12 @@ const AdminDashboard = () => {
                 ))}
              </div>
              <div className="p-6 bg-slate-50/50 text-center">
-                <button className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">View All Requests</button>
+                <button 
+                  onClick={() => navigate('/dashboard/admin/users')}
+                  className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest"
+                >
+                  View All Requests
+                </button>
              </div>
           </div>
 

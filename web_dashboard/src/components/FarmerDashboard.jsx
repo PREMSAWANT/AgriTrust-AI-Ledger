@@ -16,10 +16,11 @@ import {
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import DashboardLayout from './DashboardLayout';
-import { AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { getBatches } from '../api';
 
 const FarmerDashboard = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [batches, setBatches] = useState([]);
@@ -56,7 +57,10 @@ const FarmerDashboard = () => {
             <h1 className="text-3xl md:text-4xl font-black tracking-tighter mb-2">Farmer Overview</h1>
             <p className="text-slate-500 font-medium text-sm md:text-base">Monitoring your farm's digital provenance.</p>
           </div>
-          <button className="btn-primary w-full md:w-auto px-8 py-4 shadow-xl shadow-emerald-100 flex items-center justify-center gap-3">
+          <button 
+            onClick={() => navigate('/dashboard/farmer/logs')}
+            className="btn-primary w-full md:w-auto px-8 py-4 shadow-xl shadow-emerald-100 flex items-center justify-center gap-3"
+          >
             <Plus size={20} /> New Harvest Log
           </button>
         </div>
@@ -85,7 +89,12 @@ const FarmerDashboard = () => {
           <div className="lg:col-span-2 bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden shadow-sm">
             <div className="p-8 border-b border-slate-100 flex justify-between items-center">
               <h3 className="text-xl font-black tracking-tight">Active Provenance Batches</h3>
-              <button className="text-sm font-bold text-emerald-600">View All</button>
+              <button 
+                onClick={() => navigate('/dashboard/farmer/crops')}
+                className="text-sm font-bold text-emerald-600"
+              >
+                View All
+              </button>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">

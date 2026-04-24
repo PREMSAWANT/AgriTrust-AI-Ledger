@@ -1,17 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Download, ExternalLink, Filter } from 'lucide-react';
 import DashboardLayout from '../DashboardLayout';
+import { getBatches } from '../../api';
 
 const FarmerLogs = () => {
-  const logs = [
-    { id: 'TX-992-ABC', action: 'Batch Creation', crop: 'Alphonso Mango', time: '2 mins ago', hash: '0x7d2...f41', status: 'Confirmed' },
-    { id: 'TX-991-XYZ', action: 'IoT Sensor Update', crop: 'Nagpur Oranges', time: '14 mins ago', hash: '0x3a1...e22', status: 'Confirmed' },
-    { id: 'TX-989-LMN', action: 'Handoff Signed', crop: 'Basmati Rice', time: '1 hour ago', hash: '0x9b8...c11', status: 'Confirmed' }
-  ];
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
+  const fetchLogs = async () => {
+    try {
+      const { data } = await getBatches();
+      const batches = data.data || [];
+      // Flatten history steps into a single log list
+      const allLogs = batches.flatMap(batch => [
+        {
+          id: `TX-${batch.batchId.slice(-4)}`,
+          action: 'Batch Creation',
+          crop: batch.productName,
+          time: new Date(batch.createdAt).toLocaleDateString(),
+          hash: batch.blockchainTxHash?.slice(0, 10) + '...',
+          status: 'Confirmed'
+        },
+        ...(batch.history || []).map((h, idx) => ({
+          id: `TX-UPD-${idx}`,
+          action: h.statusUpdate || 'Location Update',
+          crop: batch.productName,
+          time: new Date(h.timestamp).toLocaleDateString(),
+          hash: '0x' + Math.random().toString(16).slice(2, 10) + '...', // Mock hash for updates if not stored
+          status: 'Confirmed'
+        }))
+      ]);
+      setLogs(allLogs.sort((a, b) => new Date(b.time) - new Date(a.time)));
+    } catch (err) {
+      console.error('Failed to fetch logs:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   return (
-    <DashboardLayout role="Farmer" userName="Rajesh Kumar">
+    <DashboardLayout role="Farmer" userName={user.name}>
       <div className="flex flex-col gap-10">
         <div className="flex justify-between items-center">
           <div>

@@ -14,9 +14,11 @@ import {
   Search
 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { useNavigate } from 'react-router-dom';
 import { getBatches } from '../api';
 
 const DistributorPortal = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +53,10 @@ const DistributorPortal = () => {
             <h1 className="text-4xl font-black tracking-tighter mb-2">Logistics Command</h1>
             <p className="text-slate-500 font-medium">Real-time supply chain monitoring & blockchain handoffs.</p>
           </div>
-          <button className="btn-secondary px-8 py-4 shadow-xl shadow-slate-100 flex items-center gap-3">
+          <button 
+            onClick={() => navigate('/dashboard/distributor/iot')}
+            className="btn-secondary px-8 py-4 shadow-xl shadow-slate-100 flex items-center gap-3"
+          >
             <ArrowRightLeft size={20} /> Register Batch Handoff
           </button>
         </div>
