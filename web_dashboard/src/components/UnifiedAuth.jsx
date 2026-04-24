@@ -12,7 +12,17 @@ const UnifiedAuth = () => {
   
   useEffect(() => {
     setIsLogin(location.pathname === '/login');
-  }, [location.pathname]);
+    
+    // Auto-redirect if already logged in
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (token && user) {
+      const dashboardPath = user.role === 'Admin' ? '/dashboard/admin' : 
+                          user.role === 'Farmer' ? '/dashboard/farmer' : 
+                          user.role === 'Distributor' ? '/dashboard/distributor' : '/dashboard/consumer';
+      navigate(dashboardPath);
+    }
+  }, [location.pathname, navigate]);
 
   const toggleMode = () => {
     const newPath = isLogin ? '/register' : '/login';

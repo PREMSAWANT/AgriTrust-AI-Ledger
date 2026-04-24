@@ -7,6 +7,19 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
+  const handleAuthAction = () => {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (token && user) {
+      const dashboardPath = user.role === 'Admin' ? '/dashboard/admin' : 
+                          user.role === 'Farmer' ? '/dashboard/farmer' : 
+                          user.role === 'Distributor' ? '/dashboard/distributor' : '/dashboard/consumer';
+      navigate(dashboardPath);
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="bg-white min-h-screen">
       {/* --- STICKY NAVBAR --- */}
@@ -18,18 +31,18 @@ const LandingPage = () => {
           </div>
           
           <div className="hidden lg:flex items-center gap-10">
-            <Link to="/about" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">About Us</Link>
-            <a href="#features" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Features</a>
-            <a href="#network" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Indian Network</a>
+            <Link to="/about" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Protocol</Link>
+            <Link to="/about" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Network</Link>
+            <Link to="/about" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Hardware</Link>
             <button 
-              onClick={() => navigate('/login')}
-              className="text-sm font-bold text-slate-900 px-6 py-2 border-2 border-slate-100 rounded-xl hover:border-emerald-600 transition-all"
+              onClick={handleAuthAction}
+              className="text-sm font-black text-slate-900 hover:text-emerald-600 transition-all uppercase tracking-widest"
             >
-              Sign In
+              Portal Login
             </button>
             <button 
-              onClick={() => navigate('/register')}
-              className="bg-emerald-600 text-white text-sm font-bold px-8 py-3 rounded-xl hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-200"
+              onClick={handleAuthAction}
+              className="px-8 py-4 bg-slate-900 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-emerald-600 transition-all shadow-2xl shadow-slate-200"
             >
               Get Started
             </button>
@@ -62,7 +75,7 @@ const LandingPage = () => {
                 <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Features</a>
                 <a href="#network" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Indian Network</a>
                 <button 
-                  onClick={() => navigate('/register')}
+                  onClick={handleAuthAction}
                   className="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black shadow-xl shadow-emerald-100"
                 >
                   Get Started Now
@@ -110,7 +123,7 @@ const LandingPage = () => {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="flex flex-col sm:flex-row items-center gap-6"
             >
-              <button onClick={() => navigate('/register')} className="btn-primary w-full sm:w-auto shadow-xl shadow-emerald-100">
+              <button onClick={handleAuthAction} className="btn-primary w-full sm:w-auto shadow-xl shadow-emerald-100">
                 Register Farm <ChevronRight size={20} />
               </button>
               <button className="flex items-center gap-4 text-slate-900 font-bold group">
