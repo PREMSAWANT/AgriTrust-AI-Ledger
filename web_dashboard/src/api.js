@@ -14,6 +14,7 @@ API.interceptors.request.use((config) => {
 });
 
 export const loginUser = (credentials) => API.post('/auth/login', credentials);
+export const registerUser = (userData) => API.post('/auth/register', userData);
 export const getBatches = () => API.get('/batches');
 export const createBatch = (batchData) => API.post('/batches', batchData);
 export const getBatchDetails = (id) => API.get(`/batches/${id}`);

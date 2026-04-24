@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { LogIn, UserPlus, AlertCircle, Home, ShieldCheck, ArrowLeft, ArrowRight, Phone, MapPin, Fingerprint, Building } from 'lucide-react';
-import { loginUser } from '../api';
-import axios from 'axios';
+import { loginUser, registerUser } from '../api';
 
 const UnifiedAuth = () => {
   const navigate = useNavigate();
@@ -60,7 +59,7 @@ const UnifiedAuth = () => {
     setLoading(true);
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/auth/register', regData);
+      await registerUser(regData);
       setIsLogin(true);
       navigate('/login');
     } catch (err) {
@@ -236,9 +235,23 @@ const UnifiedAuth = () => {
                       {loading ? 'Creating Account...' : <><UserPlus size={20} /> Complete Registration</>}
                     </button>
                     
-                    <p className="text-[10px] text-center text-slate-400 font-bold uppercase mt-2">
+                    <p className="text-[10px] text-center text-slate-400 font-bold uppercase mt-6">
                       By registering, you agree to our <Link to="/terms" className="text-emerald-600">Terms</Link> and <Link to="/privacy" className="text-emerald-600">Privacy Policy</Link>
                     </p>
+
+                    {/* Mobile Switcher */}
+                    <div className="md:hidden mt-8 pt-8 border-t border-slate-100 text-center">
+                      <p className="text-sm font-bold text-slate-500">
+                        {isLogin ? "New to AgriTrust?" : "Already have an account?"}
+                        <button 
+                          type="button"
+                          onClick={toggleMode}
+                          className="ml-2 text-emerald-600 hover:underline"
+                        >
+                          {isLogin ? "Register Now" : "Login Here"}
+                        </button>
+                      </p>
+                    </div>
                   </form>
                 )}
               </motion.div>

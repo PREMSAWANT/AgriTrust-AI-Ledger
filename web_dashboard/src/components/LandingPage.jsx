@@ -1,7 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
-import { ShieldCheck, Leaf, TrendingUp, Cpu, ChevronRight, Play, Check, Globe, Award, Menu } from 'lucide-react';
+import { ShieldCheck, Leaf, TrendingUp, Cpu, ChevronRight, Play, Check, Globe, Award, Menu, X } from 'lucide-react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
