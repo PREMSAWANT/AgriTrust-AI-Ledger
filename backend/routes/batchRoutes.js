@@ -3,7 +3,8 @@ const multer = require('multer');
 const { 
     createBatch, 
     getBatches, 
-    getBatch 
+    getBatch,
+    addTracking
 } = require('../controllers/batchController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 
@@ -15,6 +16,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.route('/')
     .get(protect, getBatches)
     .post(protect, authorize('Farmer'), upload.single('image'), createBatch);
+
+router.route('/track')
+    .post(protect, addTracking);
 
 router.route('/:id')
     .get(getBatch);

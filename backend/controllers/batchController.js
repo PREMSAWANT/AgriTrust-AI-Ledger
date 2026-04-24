@@ -101,3 +101,48 @@ exports.getBatch = async (req, res) => {
         });
     }
 };
+// @desc    Add tracking update to batch
+// @route   POST /api/batches/track
+// @access  Private
+exports.addTracking = async (req, res) => {
+    try {
+        const { batchId, statusUpdate, location, environmentalData } = req.body;
+
+        const batch = await Batch.findOne({ batchId });
+        if (!batch) {
+            return res.status(404).json({ success: false, error: 'Batch not found' });
+        }
+
+        // Calculate new trust score based on update
+        const currentHistory = await Tracking.find({ batch: batch._id });
+        const newTrustScore = calculateTrustScore(batch, [...currentHistory, { statusUpdate, environmentalData }]);
+
+        const tracking = await Tracking.create({
+            batch: batch._id,
+            scannedBy: req.user.id,
+            location: {
+                description: location?.description || 'Transit Point',
+                type: 'Point',
+                coordinates: [0, 0]
+            },
+            statusUpdate,
+            environmentalData,
+            trustScoreEffect: newTrustScore - batch.trustScore
+        });
+
+        // Update batch status and trust score
+        batch.status = statusUpdate;
+        batch.trustScore = newTrustScore;
+        await batch.save();
+
+        res.status(200).json({
+            success: true,
+            data: tracking
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            error: error.message
+        });
+    }
+};

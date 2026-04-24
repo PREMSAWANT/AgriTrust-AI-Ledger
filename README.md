@@ -84,6 +84,25 @@ Explore the system with these pre-seeded accounts:
 - **Mobile**: React Native, Expo.
 - **Storage**: IPFS (Simulated Gateway).
 
+## 🔐 Security Policy
+
+### Supported Versions
+| Version | Supported          |
+| ------- | ------------------ |
+| 1.0.x   | :white_check_mark: |
+| < 1.0   | :x:                |
+
+### Reporting a Vulnerability
+We take the security of the AgriTrust AI-Ledger seriously. If you find a security vulnerability, please do not disclose it publicly. Instead:
+1. **Email**: Send a report to security@agritrust.com.
+2. **Details**: Include description, reproduction steps, and impact.
+3. **Response**: We acknowledge reports within 48 hours.
+
+### Implementation Best Practices
+- **JWT Secrets**: Use high-entropy strings in production.
+- **Private Keys**: NEVER commit keys or `.env` files.
+- **Data Sanitization**: We use `helmet` and standard Express security limits.
+
 ## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
