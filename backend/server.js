@@ -38,8 +38,12 @@ app.use('/api/tracking', require('./routes/trackingRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 // app.use('/api/admin', require('./routes/admin'));
 
-const PORT = process.env.PORT || 5000;
+// Export for Vercel
+module.exports = app;
 
-app.listen(PORT, () => {
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    });
+}
