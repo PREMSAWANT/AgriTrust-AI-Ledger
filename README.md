@@ -20,12 +20,24 @@
 ```text
 AgriTrust-AI-Ledger/
 ├── backend/            # Express API, MongoDB, AI Logic, IPFS
-├── web_dashboard/      # React (Vite) Farmer, Admin & Distributor Portals
-├── frontend/           # React Native (Expo) Mobile Consumer App
-└── blockchain/         # Hardhat, Solidity Smart Contracts
+├── web_dashboard/      # React (Vite) Dashboards for all roles
+├── mobile_client/      # React Native (Expo) Mobile Consumer App
+├── blockchain/         # Hardhat, Solidity Smart Contracts
+└── vercel.json         # Deployment configuration
 ```
 
-## 🚀 Quick Start
+## 🚀 Deployment
+
+### Vercel (Monorepo)
+The project is pre-configured for a **Vercel Monorepo** deployment (Frontend + Backend).
+
+1. Import the repository to Vercel.
+2. Select the **Root Directory** (./).
+3. Add the following **Environment Variables** in Vercel:
+   - `MONGO_URI`: Your MongoDB Atlas connection string.
+   - `JWT_SECRET`: A secure random string for authentication.
+   - `NODE_ENV`: `production`
+4. Deploy.
 
 ### 1. Prerequisites
 - Node.js (v18+)
@@ -47,12 +59,14 @@ npm install
 npm run dev
 ```
 
-### 4. Blockchain Setup
+### 4. Mobile Client Setup
 ```bash
-cd blockchain
+cd mobile_client
 npm install
-npx hardhat compile
+npx expo start
 ```
+
+### 5. Blockchain Setup
 
 ## 🔑 Test Credentials
 Explore the system with these pre-seeded accounts:
