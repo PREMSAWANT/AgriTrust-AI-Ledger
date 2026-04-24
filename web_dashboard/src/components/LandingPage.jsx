@@ -5,18 +5,19 @@ import { ShieldCheck, Leaf, TrendingUp, Cpu, ChevronRight, Play, Check, Globe, A
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   return (
     <div className="bg-white min-h-screen">
       {/* --- STICKY NAVBAR --- */}
       <nav className="fixed top-0 left-0 right-0 z-[100] bg-white/90 backdrop-blur-xl border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-8 h-24 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 h-20 md:h-24 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <img src="/favicon.png" alt="AgriTrust Icon" className="w-10 h-10 rounded-xl shadow-lg shadow-emerald-200 object-contain" />
-            <span className="text-2xl font-black text-slate-900 tracking-tighter uppercase">AgriTrust</span>
+            <img src="/favicon.png" alt="AgriTrust Icon" className="w-8 h-8 md:w-10 md:h-10 rounded-xl shadow-lg shadow-emerald-200 object-contain" />
+            <span className="text-xl md:text-2xl font-black text-slate-900 tracking-tighter uppercase">AgriTrust</span>
           </div>
           
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden lg:flex items-center gap-10">
             <Link to="/about" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">About Us</Link>
             <a href="#features" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Features</a>
             <a href="#network" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Indian Network</a>
@@ -34,10 +35,42 @@ const LandingPage = () => {
             </button>
           </div>
 
-          <div className="md:hidden">
-            <Menu size={24} className="text-slate-900" />
+          <div className="lg:hidden flex items-center gap-4">
+            <button 
+              onClick={() => navigate('/login')}
+              className="text-xs font-bold text-slate-900 px-4 py-2 border-2 border-slate-100 rounded-lg"
+            >
+              Sign In
+            </button>
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 bg-slate-50 rounded-lg text-slate-900">
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu Drawer */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="lg:hidden bg-white border-b border-slate-100 overflow-hidden"
+            >
+              <div className="px-6 py-10 flex flex-col gap-6 text-center">
+                <Link to="/about" className="text-lg font-black text-slate-900">About Us</Link>
+                <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Features</a>
+                <a href="#network" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Indian Network</a>
+                <button 
+                  onClick={() => navigate('/register')}
+                  className="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black shadow-xl shadow-emerald-100"
+                >
+                  Get Started Now
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* --- HERO SECTION --- */}

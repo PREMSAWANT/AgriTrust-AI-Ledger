@@ -59,43 +59,43 @@ const VerifyProduct = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 p-6 flex flex-col items-center justify-center">
-      <Link to="/" className="mb-6 self-start md:self-center text-slate-500 flex items-center gap-2 hover:text-white transition-all">
+    <div className="min-h-screen bg-slate-950 p-4 md:p-6 flex flex-col items-center justify-start md:justify-center">
+      <Link to="/" className="mb-6 mt-4 self-start md:self-center text-slate-500 flex items-center gap-2 hover:text-white transition-all">
         <ArrowLeft size={16} /> Home
       </Link>
       
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="glass-card w-full max-w-2xl overflow-hidden"
+        className="glass-card w-full max-w-2xl overflow-hidden mb-10"
       >
         {/* Verification Banner */}
-        <div className="bg-emerald-500/20 p-8 border-b border-emerald-500/30 flex flex-col items-center gap-4 text-center">
+        <div className="bg-emerald-500/20 p-6 md:p-8 border-b border-emerald-500/30 flex flex-col items-center gap-4 text-center">
           <motion.div 
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", damping: 10, stiffness: 100 }}
             className="p-4 bg-emerald-500 rounded-full shadow-lg shadow-emerald-500/50"
           >
-            <ShieldCheck className="text-white w-10 h-10" />
+            <ShieldCheck className="text-white w-8 h-8 md:w-10 md:h-10" />
           </motion.div>
           <div>
-            <h1 className="text-3xl font-bold text-white">Authenticity Verified</h1>
-            <p className="text-emerald-400 font-medium">Batch Provenance Securely Logged on Blockchain</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-white">Authenticity Verified</h1>
+            <p className="text-emerald-400 text-xs md:text-sm font-medium">Batch Provenance Securely Logged on Blockchain</p>
           </div>
         </div>
 
-        <div className="p-8">
+        <div className="p-6 md:p-8">
           {/* Main Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
             <div>
               <p className="text-[10px] text-slate-500 uppercase font-black mb-1">Product</p>
-              <h2 className="text-2xl font-bold text-white">{product.productName}</h2>
+              <h2 className="text-xl md:text-2xl font-bold text-white">{product.productName}</h2>
               <p className="text-slate-400 text-sm">Harvested by {product.farmer?.name}</p>
             </div>
-            <div className="md:text-right">
+            <div className="md:text-right flex flex-col md:items-end">
               <p className="text-[10px] text-slate-500 uppercase font-black mb-1">Trust Score</p>
-              <div className="flex items-center md:justify-end gap-3">
+              <div className="flex items-center gap-3">
                 <div className="h-2 w-24 bg-slate-800 rounded-full overflow-hidden hidden md:block">
                   <motion.div 
                     initial={{ width: 0 }}
@@ -103,7 +103,7 @@ const VerifyProduct = () => {
                     className="h-full bg-emerald-500"
                   />
                 </div>
-                <h2 className="text-4xl font-black text-emerald-400">{product.trustScore}%</h2>
+                <h2 className="text-3xl md:text-4xl font-black text-emerald-400">{product.trustScore}%</h2>
               </div>
             </div>
           </div>

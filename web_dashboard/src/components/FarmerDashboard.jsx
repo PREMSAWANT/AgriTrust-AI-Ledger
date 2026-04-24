@@ -38,12 +38,12 @@ const FarmerDashboard = () => {
     <DashboardLayout role="Farmer" userName={user.name}>
       <div className="flex flex-col gap-10">
         {/* Welcome Header */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
-            <h1 className="text-4xl font-black tracking-tighter mb-2">Farmer Overview</h1>
-            <p className="text-slate-500 font-medium">Monitoring your farm's digital provenance.</p>
+            <h1 className="text-3xl md:text-4xl font-black tracking-tighter mb-2">Farmer Overview</h1>
+            <p className="text-slate-500 font-medium text-sm md:text-base">Monitoring your farm's digital provenance.</p>
           </div>
-          <button className="btn-primary px-8 py-4 shadow-xl shadow-emerald-100 flex items-center gap-3">
+          <button className="btn-primary w-full md:w-auto px-8 py-4 shadow-xl shadow-emerald-100 flex items-center justify-center gap-3">
             <Plus size={20} /> New Harvest Log
           </button>
         </div>

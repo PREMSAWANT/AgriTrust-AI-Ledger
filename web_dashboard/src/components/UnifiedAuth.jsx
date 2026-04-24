@@ -71,18 +71,18 @@ const UnifiedAuth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-slate-50 overflow-hidden relative">
+    <div className="min-h-screen flex items-center justify-center p-4 md:p-6 bg-slate-50 relative overflow-y-auto">
       <button 
         onClick={() => navigate('/')}
-        className="absolute top-8 left-8 p-4 bg-white rounded-2xl shadow-xl shadow-slate-200 border border-slate-100 text-slate-900 hover:bg-emerald-50 hover:text-emerald-600 transition-all flex items-center gap-2 font-bold z-50"
+        className="fixed top-4 left-4 md:top-8 md:left-8 p-3 md:p-4 bg-white rounded-xl md:rounded-2xl shadow-xl shadow-slate-200 border border-slate-100 text-slate-900 hover:bg-emerald-50 hover:text-emerald-600 transition-all flex items-center gap-2 font-bold z-[100]"
       >
-        <Home size={20} /> Back to Home
+        <Home size={18} /> <span className="hidden sm:inline">Back to Home</span>
       </button>
 
       <motion.div 
         layout
         transition={{ type: "spring", stiffness: 200, damping: 25 }}
-        className={`flex flex-col md:flex-row w-full max-w-5xl glass-card overflow-hidden border-none shadow-2xl min-h-[700px] ${!isLogin ? 'md:flex-row-reverse' : ''}`}
+        className={`flex flex-col md:flex-row w-full max-w-5xl glass-card overflow-hidden border-none shadow-2xl min-h-[auto] md:min-h-[700px] mt-20 md:mt-0 ${!isLogin ? 'md:flex-row-reverse' : ''}`}
       >
         <motion.div 
           layout
