@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   StyleSheet, 
   View, 
   Text, 
   ScrollView, 
   TouchableOpacity, 
-  Image 
+  Image,
+  ActivityIndicator
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, SHADOWS } from '../utils/theme';
 import { 
   ShieldCheck, 
@@ -17,14 +19,35 @@ import {
   ChevronRight,
   Bell,
   Search
-} from 'lucide-react-native'; // Use -native version if available, or just use Icons
+} from 'lucide-react-native';
+import { getBatches } from '../utils/api';
 
 const DashboardScreen = ({ route, navigation }) => {
-  const { role = 'Farmer' } = route.params || {};
+  const [batches, setBatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      const userData = await AsyncStorage.getItem('user');
+      if (userData) setUser(JSON.parse(userData));
+      
+      const response = await getBatches();
+      setBatches(response.data || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const stats = [
     { label: 'Trust Score', value: '99.2%', icon: <Award size={20} color={COLORS.primary} /> },
-    { label: 'Batches', value: '12', icon: <Package size={20} color="#3b82f6" /> },
+    { label: 'Batches', value: batches.length.toString(), icon: <Package size={20} color="#3b82f6" /> },
     { label: 'Revenue', value: '₹4.2L', icon: <TrendingUp size={20} color="#8b5cf6" /> }
   ];
 
@@ -34,8 +57,8 @@ const DashboardScreen = ({ route, navigation }) => {
         {/* Top Navigation */}
         <View style={styles.topNav}>
           <View>
-            <Text style={styles.welcome}>Namaste, Rajesh</Text>
-            <Text style={styles.roleTag}>{role} Portal</Text>
+            <Text style={styles.welcome}>Namaste, {user.name || 'User'}</Text>
+            <Text style={styles.roleTag}>{user.role || 'AgriTrust'} Portal</Text>
           </View>
           <TouchableOpacity style={styles.notifBtn}>
              <Bell size={24} color={COLORS.slate[900]} />
@@ -71,21 +94,21 @@ const DashboardScreen = ({ route, navigation }) => {
            <TouchableOpacity><Text style={styles.viewAll}>View All</Text></TouchableOpacity>
         </View>
 
-        {[
-          { id: 'BATCH-MH-102', crop: 'Alphonso Mango', loc: 'Ratnagiri', trust: '99%' },
-          { id: 'BATCH-MH-105', crop: 'Nagpur Oranges', loc: 'Nagpur', trust: '98%' },
-          { id: 'BATCH-MH-098', crop: 'Basmati Rice', loc: 'Punjab', trust: '100%' },
-        ].map((item, i) => (
-          <TouchableOpacity key={i} style={styles.historyItem}>
+        {batches.map((item, i) => (
+          <TouchableOpacity 
+            key={i} 
+            style={styles.historyItem}
+            onPress={() => navigation.navigate('ProductDetails', { product: item })}
+          >
              <View style={styles.historyIcon}>
                 <Package size={24} color={COLORS.primary} />
              </View>
              <View style={styles.historyText}>
-                <Text style={styles.historyId}>{item.id}</Text>
-                <Text style={styles.historyCrop}>{item.crop} • {item.loc}</Text>
+                <Text style={styles.historyId}>{item.batchId}</Text>
+                <Text style={styles.historyCrop}>{item.productName} • {item.location?.farmName || 'Verified Farm'}</Text>
              </View>
              <View style={styles.historyEnd}>
-                <Text style={styles.historyTrust}>{item.trust}</Text>
+                <Text style={styles.historyTrust}>{item.trustScore}%</Text>
                 <ChevronRight size={20} color={COLORS.slate[400]} />
              </View>
           </TouchableOpacity>
