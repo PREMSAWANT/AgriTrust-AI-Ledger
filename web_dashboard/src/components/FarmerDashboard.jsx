@@ -17,20 +17,33 @@ import {
 import { QRCodeSVG } from 'qrcode.react';
 import DashboardLayout from './DashboardLayout';
 import { AnimatePresence } from 'framer-motion';
+import { getBatches } from '../api';
 
 const FarmerDashboard = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
   const [selectedBatch, setSelectedBatch] = useState(null);
-  const [batches, setBatches] = useState([
-    { id: 'BATCH-MH-102', crop: 'Alphonso Mango', date: '24 Apr 2026', status: 'Harvested', trust: 98, location: 'Ratnagiri' },
-    { id: 'BATCH-MH-105', crop: 'Nagpur Oranges', date: '20 Apr 2026', status: 'In Transit', trust: 99, location: 'Nagpur' },
-    { id: 'BATCH-MH-098', crop: 'Basmati Rice', date: '12 Apr 2026', status: 'Verified', trust: 100, location: 'Punjab' }
-  ]);
+  const [batches, setBatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBatches();
+  }, []);
+
+  const fetchBatches = async () => {
+    try {
+      const { data } = await getBatches();
+      setBatches(data.data || []);
+    } catch (err) {
+      console.error('Failed to fetch batches:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const stats = [
-    { label: 'Active Batches', value: '12', icon: <Database className="text-emerald-600" />, change: '+2' },
+    { label: 'Active Batches', value: batches.length.toString(), icon: <Database className="text-emerald-600" />, change: '+2' },
     { label: 'AI Trust Score', value: '99.2%', icon: <Award className="text-blue-600" />, change: '+0.5%' },
-    { label: 'Total Revenue', value: '₹4.2L', icon: <TrendingUp className="text-purple-600" />, change: '+12%' },
+    { label: 'Total Revenue', value: `₹${(batches.length * 0.35).toFixed(1)}L`, icon: <TrendingUp className="text-purple-600" />, change: '+12%' },
     { label: 'Network Rank', value: '#14', icon: <ShieldCheck className="text-amber-600" />, change: 'Top 1%' }
   ];
 
@@ -89,19 +102,19 @@ const FarmerDashboard = () => {
                   {batches.map((batch, i) => (
                     <tr key={i} onClick={() => setSelectedBatch(batch)} className="hover:bg-slate-50/50 transition-all cursor-pointer group">
                       <td className="p-6">
-                        <p className="font-black text-slate-900 mb-1">{batch.id}</p>
-                        <p className="text-xs text-slate-400 flex items-center gap-1"><MapPin size={10} /> {batch.location}</p>
+                        <p className="font-black text-slate-900 mb-1">{batch.batchId}</p>
+                        <p className="text-xs text-slate-400 flex items-center gap-1"><MapPin size={10} /> {batch.location?.farmName || 'Verified Farm'}</p>
                       </td>
                       <td className="p-6">
-                        <p className="font-bold text-slate-700">{batch.crop}</p>
-                        <p className="text-xs text-slate-400 flex items-center gap-1"><Calendar size={10} /> {batch.date}</p>
+                        <p className="font-bold text-slate-700">{batch.productName}</p>
+                        <p className="text-xs text-slate-400 flex items-center gap-1"><Calendar size={10} /> {new Date(batch.harvestDate).toLocaleDateString()}</p>
                       </td>
                       <td className="p-6">
                         <div className="flex items-center gap-2">
                           <div className="w-full max-w-[60px] h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${batch.trust}%` }}></div>
+                            <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${batch.trustScore}%` }}></div>
                           </div>
-                          <span className="text-xs font-black text-emerald-600">{batch.trust}%</span>
+                          <span className="text-xs font-black text-emerald-600">{batch.trustScore}%</span>
                         </div>
                       </td>
                       <td className="p-6">
@@ -182,22 +195,22 @@ const FarmerDashboard = () => {
                  <div className="w-20 h-20 bg-emerald-50 rounded-[2rem] flex items-center justify-center text-emerald-600 mb-6">
                     <QrCode size={40} />
                  </div>
-                 <h3 className="text-3xl font-black tracking-tighter mb-2">Batch QR Code</h3>
-                 <p className="text-slate-500 font-medium mb-8">Scan to verify {selectedBatch.crop} on the ledger.</p>
+                  <h3 className="text-3xl font-black tracking-tighter mb-2">Batch QR Code</h3>
+                  <p className="text-slate-500 font-medium mb-8">Scan to verify {selectedBatch.productName} on the ledger.</p>
 
-                 <div className="p-8 bg-white rounded-[2.5rem] border-4 border-slate-50 shadow-inner mb-8">
-                    <QRCodeSVG 
-                      value={`${window.location.origin}/verify/${selectedBatch.id}`} 
-                      size={200}
-                      level="H"
-                      includeMargin={false}
-                    />
-                 </div>
+                  <div className="p-8 bg-white rounded-[2.5rem] border-4 border-slate-50 shadow-inner mb-8">
+                     <QRCodeSVG 
+                       value={`${window.location.origin}/verify/${selectedBatch.batchId}`} 
+                       size={200}
+                       level="H"
+                       includeMargin={false}
+                     />
+                  </div>
 
-                 <div className="w-full p-6 bg-slate-50 rounded-2xl border border-slate-100 mb-8">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Decentralized Batch ID</p>
-                    <p className="text-sm font-mono font-black text-slate-900">{selectedBatch.id}</p>
-                 </div>
+                  <div className="w-full p-6 bg-slate-50 rounded-2xl border border-slate-100 mb-8">
+                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Decentralized Batch ID</p>
+                     <p className="text-sm font-mono font-black text-slate-900">{selectedBatch.batchId}</p>
+                  </div>
 
                  <button className="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-100">
                     Download for Print

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ShieldCheck, 
@@ -14,14 +14,32 @@ import {
   Filter
 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { getBatches } from '../api';
 
 const AdminDashboard = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
+  const [batches, setBatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBatches();
+  }, []);
+
+  const fetchBatches = async () => {
+    try {
+      const { data } = await getBatches();
+      setBatches(data.data || []);
+    } catch (err) {
+      console.error('Failed to fetch batches:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
   
   const systemMetrics = [
     { label: 'Network Hashrate', value: '42.8 TH/s', icon: <Cpu />, trend: '+4%' },
-    { label: 'Blockchain Height', value: '1,829,401', icon: <Server />, trend: 'Stable' },
-    { label: 'Total Verified Farms', value: '5,204', icon: <Globe />, trend: '+122' },
+    { label: 'Blockchain Height', value: (1829401 + batches.length).toLocaleString(), icon: <Server />, trend: 'Stable' },
+    { label: 'Total Verified Batches', value: batches.length.toLocaleString(), icon: <Globe />, trend: `+${batches.length}` },
     { label: 'Active Smart Contracts', value: '12', icon: <Database />, trend: 'Active' }
   ];
 

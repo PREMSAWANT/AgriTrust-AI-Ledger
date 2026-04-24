@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Truck, 
@@ -14,19 +14,32 @@ import {
   Search
 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { getBatches } from '../api';
 
 const DistributorPortal = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
-  const [shipments, setShipments] = useState([
-    { id: 'SH-202-01', from: 'Anil Deshmukh Farm', to: 'Mumbai Hub', status: 'In Transit', temp: '24°C', humidity: '45%', priority: 'High' },
-    { id: 'SH-202-05', from: 'Priya Sharma Farm', to: 'Exports Gate 4', status: 'Handoff Ready', temp: '18°C', humidity: '40%', priority: 'Normal' },
-    { id: 'SH-201-99', from: 'Rajesh Kumar Farm', to: 'Pune Distribution', status: 'Delayed', temp: '30°C', humidity: '60%', priority: 'Critical' }
-  ]);
+  const [batches, setBatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBatches();
+  }, []);
+
+  const fetchBatches = async () => {
+    try {
+      const { data } = await getBatches();
+      setBatches(data.data || []);
+    } catch (err) {
+      console.error('Failed to fetch batches:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const metrics = [
-    { label: 'Live Shipments', value: '28', icon: <Truck />, status: 'On Track' },
+    { label: 'Live Shipments', value: batches.length.toString(), icon: <Truck />, status: 'On Track' },
     { label: 'Avg Transit Time', value: '1.4 Days', icon: <Clock />, status: '-12%' },
-    { label: 'Active Alerts', value: '2', icon: <AlertTriangle />, status: 'Needs Attention' },
+    { label: 'Active Alerts', value: '0', icon: <AlertTriangle />, status: 'No Issues' },
     { label: 'Successful Logs', value: '1,204', icon: <CheckCircle2 />, status: 'Verified' }
   ];
 
@@ -82,7 +95,7 @@ const DistributorPortal = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {shipments.map((ship, i) => (
+                  {batches.map((ship, i) => (
                     <tr key={i} className="hover:bg-slate-50 transition-all cursor-pointer">
                       <td className="p-6">
                         <div className="flex items-center gap-3">
@@ -90,33 +103,32 @@ const DistributorPortal = () => {
                             <Package size={20} />
                           </div>
                           <div>
-                             <p className="font-black text-slate-900">{ship.id}</p>
+                             <p className="font-black text-slate-900">{ship.batchId}</p>
                              <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-tighter">{ship.status}</p>
                           </div>
                         </div>
                       </td>
                       <td className="p-6">
-                        <p className="text-sm font-bold text-slate-700">{ship.from}</p>
-                        <p className="text-xs text-slate-400">to {ship.to}</p>
+                        <p className="text-sm font-bold text-slate-700">{ship.location?.farmName || 'Verified Farm'}</p>
+                        <p className="text-xs text-slate-400">to Central Hub</p>
                       </td>
                       <td className="p-6">
                         <div className="flex items-center gap-6">
                           <div className="flex items-center gap-2">
-                             <Thermometer size={14} className={parseInt(ship.temp) > 28 ? 'text-red-500' : 'text-blue-500'} />
-                             <span className="text-xs font-black text-slate-600">{ship.temp}</span>
+                             <Thermometer size={14} className="text-blue-500" />
+                             <span className="text-xs font-black text-slate-600">22°C</span>
                           </div>
                           <div className="flex items-center gap-2">
                              <Droplets size={14} className="text-blue-400" />
-                             <span className="text-xs font-black text-slate-600">{ship.humidity}</span>
+                             <span className="text-xs font-black text-slate-600">45%</span>
                           </div>
                         </div>
                       </td>
                       <td className="p-6">
                         <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase ${
-                          ship.priority === 'Critical' ? 'bg-red-50 text-red-600' : 
-                          ship.priority === 'High' ? 'bg-amber-50 text-amber-600' : 'bg-slate-50 text-slate-500'
+                          ship.trustScore > 95 ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
                         }`}>
-                          {ship.priority}
+                          {ship.trustScore > 95 ? 'Normal' : 'High Priority'}
                         </span>
                       </td>
                       <td className="p-6 text-right">
