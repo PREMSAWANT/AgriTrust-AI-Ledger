@@ -30,7 +30,7 @@ const ProductDetailsScreen = ({ product, onBack }) => {
           <View style={styles.row}>
             <View>
               <Text style={styles.label}>PRODUCT</Text>
-              <Text style={styles.value}>{product.name}</Text>
+              <Text style={styles.value}>{product.productName}</Text>
             </View>
             <View style={styles.scoreContainer}>
               <Text style={[styles.label, { textAlign: 'right' }]}>TRUST SCORE</Text>
@@ -43,14 +43,23 @@ const ProductDetailsScreen = ({ product, onBack }) => {
         <Text style={styles.sectionTitle}>Provenance Journey</Text>
         <View style={styles.timeline}>
           {[
-            { status: 'Delivered', loc: 'Central Market', date: '2026-04-23', temp: 4 },
-            { status: 'In-Transit', loc: 'Logistics Hub B', date: '2026-04-22', temp: 5 },
-            { status: 'Harvested', loc: 'Green Valley Farms', date: '2026-04-20', temp: 18 },
+            { 
+              status: 'Harvested', 
+              loc: product.location?.farmName || 'Verified Farm', 
+              date: new Date(product.harvestDate).toLocaleDateString(), 
+              temp: 22 
+            },
+            ...(product.history || []).map(h => ({
+              status: h.statusUpdate || 'Transit',
+              loc: h.location?.description || 'Logistics Hub',
+              date: new Date(h.timestamp).toLocaleDateString(),
+              temp: h.environmentalData?.temperature || 24
+            }))
           ].map((item, i) => (
             <View key={i} style={styles.timelineItem}>
               <View style={styles.timelineLine}>
                 <View style={[styles.dot, i === 0 && styles.activeDot]} />
-                {i < 2 && <View style={styles.line} />}
+                {i < (product.history?.length || 0) && <View style={styles.line} />}
               </View>
               <View style={styles.timelineContent}>
                 <View style={styles.row}>
@@ -70,7 +79,7 @@ const ProductDetailsScreen = ({ product, onBack }) => {
         {/* Technical Metadata */}
         <View style={styles.metaCard}>
           <Text style={styles.metaLabel}>BLOCKCHAIN TRANSACTION</Text>
-          <Text style={styles.metaValue} numberOfLines={1}>0x742d35Cc6634C0532925a3b844Bc454e4438f44e</Text>
+          <Text style={styles.metaValue} numberOfLines={1}>{product.blockchainTxHash || '0x_awaiting_consensus'}</Text>
         </View>
       </ScrollView>
 

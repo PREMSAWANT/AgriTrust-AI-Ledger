@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   History, 
@@ -10,21 +10,34 @@ import {
   ChevronRight,
   Star,
   Award,
-  Search
+  Search,
+  Plus
 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { getBatches } from '../api';
 
 const ConsumerDashboard = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
-  
-  const scanHistory = [
-    { id: 'AGRI-IND-992', crop: 'Alphonso Mango', farm: 'Ratna Exports', date: '24 Apr 2026', trust: 99.2 },
-    { id: 'AGRI-IND-881', crop: 'Nagpur Oranges', farm: 'Priya Sharma Farms', date: '22 Apr 2026', trust: 98.5 },
-    { id: 'AGRI-IND-776', crop: 'Basmati Rice', farm: 'Kisan Cooperative', date: '15 Apr 2026', trust: 100 }
-  ];
+  const [batches, setBatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBatches();
+  }, []);
+
+  const fetchBatches = async () => {
+    try {
+      const { data } = await getBatches();
+      setBatches(data.data || []);
+    } catch (err) {
+      console.error('Failed to fetch batches:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const consumerMetrics = [
-    { label: 'Verified Products', value: '18', icon: <ShieldCheck className="text-emerald-500" /> },
+    { label: 'Verified Products', value: batches.length.toString(), icon: <ShieldCheck className="text-emerald-500" /> },
     { label: 'Avg Farm Trust', value: '98.8%', icon: <Award className="text-blue-500" /> },
     { label: 'Favorite Farms', value: '4', icon: <Heart className="text-red-500" /> }
   ];
@@ -65,21 +78,21 @@ const ConsumerDashboard = () => {
                  <button className="text-sm font-bold text-emerald-600">Download Report</button>
               </div>
               <div className="p-8 space-y-6">
-                 {scanHistory.map((scan, i) => (
+                 {batches.map((scan, i) => (
                    <div key={i} className="flex items-center justify-between p-6 bg-slate-50 rounded-3xl hover:bg-white hover:shadow-xl hover:shadow-slate-100 transition-all cursor-pointer group border border-transparent hover:border-slate-100">
                       <div className="flex items-center gap-6">
                          <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 shadow-sm group-hover:bg-emerald-600 group-hover:text-white transition-all">
                             <History size={28} />
                          </div>
                          <div>
-                            <p className="font-black text-slate-900 text-lg">{scan.crop}</p>
-                            <p className="text-sm font-bold text-slate-400">{scan.farm} • {scan.date}</p>
+                            <p className="font-black text-slate-900 text-lg">{scan.productName}</p>
+                            <p className="text-sm font-bold text-slate-400">{scan.location?.farmName || 'Verified Farm'} • {new Date(scan.createdAt).toLocaleDateString()}</p>
                          </div>
                       </div>
                       <div className="flex items-center gap-10">
                          <div className="text-right hidden sm:block">
                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">AI Trust</p>
-                            <p className="text-lg font-black text-emerald-600">{scan.trust}%</p>
+                            <p className="text-lg font-black text-emerald-600">{scan.trustScore}%</p>
                          </div>
                          <ChevronRight size={20} className="text-slate-300 group-hover:text-emerald-600 transition-all" />
                       </div>
