@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { LogIn, UserPlus, AlertCircle, Home, ShieldCheck, ArrowLeft, ArrowRight, Phone, MapPin, Fingerprint, Building } from 'lucide-react';
+import { LogIn, UserPlus, AlertCircle, Home, ShieldCheck, ArrowLeft, ArrowRight, Phone, MapPin, Fingerprint, Building, Eye, EyeOff } from 'lucide-react';
 import { loginUser, registerUser } from '../api';
 
 const UnifiedAuth = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogin, setIsLogin] = useState(location.pathname === '/login');
+  const [showPassword, setShowPassword] = useState(false);
   
   useEffect(() => {
     setIsLogin(location.pathname === '/login');
@@ -164,7 +165,23 @@ const UnifiedAuth = () => {
                         <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Password</label>
                         <a href="#" className="text-xs font-bold text-emerald-600 hover:underline">Forgot?</a>
                       </div>
-                      <input type="password" className="input-premium" placeholder="••••••••" required value={loginPassword} onChange={e => setLoginPassword(e.target.value)} />
+                      <div className="relative">
+                        <input 
+                          type={showPassword ? "text" : "password"} 
+                          className="input-premium pr-12" 
+                          placeholder="••••••••" 
+                          required 
+                          value={loginPassword} 
+                          onChange={e => setLoginPassword(e.target.value)} 
+                        />
+                        <button 
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-all"
+                        >
+                          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                      </div>
                     </div>
                     <button type="submit" disabled={loading} className="btn-primary w-full py-4 mt-4">
                       {loading ? 'Authenticating...' : <><LogIn size={20} /> Sign In</>}
@@ -228,7 +245,23 @@ const UnifiedAuth = () => {
 
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Password</label>
-                      <input type="password" className="input-premium py-3" placeholder="••••••••" required value={regData.password} onChange={e => setRegData({...regData, password: e.target.value})} />
+                      <div className="relative">
+                        <input 
+                          type={showPassword ? "text" : "password"} 
+                          className="input-premium py-3 pr-12" 
+                          placeholder="••••••••" 
+                          required 
+                          value={regData.password} 
+                          onChange={e => setRegData({...regData, password: e.target.value})} 
+                        />
+                        <button 
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-all"
+                        >
+                          {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                      </div>
                     </div>
 
                     <button type="submit" disabled={loading} className="btn-primary w-full py-4 mt-2">
