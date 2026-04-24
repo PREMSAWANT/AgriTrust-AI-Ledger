@@ -187,7 +187,7 @@ const FarmerDashboard = () => {
 
                  <div className="p-8 bg-white rounded-[2.5rem] border-4 border-slate-50 shadow-inner mb-8">
                     <QRCodeSVG 
-                      value={`http://localhost:5176/verify/${selectedBatch.id}`} 
+                      value={`${window.location.origin}/verify/${selectedBatch.id}`} 
                       size={200}
                       level="H"
                       includeMargin={false}
