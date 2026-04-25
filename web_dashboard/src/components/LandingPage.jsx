@@ -31,9 +31,9 @@ const LandingPage = () => {
           </div>
           
           <div className="hidden lg:flex items-center gap-10">
-            <Link to="/about" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Protocol</Link>
-            <Link to="/about" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Network</Link>
-            <Link to="/about" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Hardware</Link>
+            <a href="#features" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Protocol</a>
+            <a href="#network" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Network</a>
+            <a href="#hardware" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Hardware</a>
             <button 
               onClick={handleAuthAction}
               className="text-sm font-black text-slate-900 hover:text-emerald-600 transition-all uppercase tracking-widest"
@@ -72,8 +72,9 @@ const LandingPage = () => {
             >
               <div className="px-6 py-10 flex flex-col gap-6 text-center">
                 <Link to="/about" className="text-lg font-black text-slate-900">About Us</Link>
-                <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Features</a>
-                <a href="#network" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Indian Network</a>
+                <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Protocol</a>
+                <a href="#network" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Network</a>
+                <a href="#hardware" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Hardware</a>
                 <button 
                   onClick={handleAuthAction}
                   className="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black shadow-xl shadow-emerald-100"
@@ -143,7 +144,7 @@ const LandingPage = () => {
           >
             <div className="absolute -inset-10 bg-emerald-500/5 blur-[100px] rounded-full"></div>
             <img 
-              src="/hero_farmer.png" 
+              src="/hero.png" 
               alt="Indian Farmer" 
               className="relative rounded-[3rem] shadow-premium object-cover aspect-[4/5] w-full border-[10px] border-white"
             />
@@ -233,6 +234,40 @@ const LandingPage = () => {
             </button>
           </div>
         </div>
+      </section>
+
+      {/* --- HARDWARE SECTION --- */}
+      <section id="hardware" className="section-padding bg-slate-900 text-white overflow-hidden relative">
+         <div className="absolute top-0 right-0 p-20 opacity-5">
+            <Cpu size={300} />
+         </div>
+         <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div className="order-2 lg:order-1">
+               <h2 className="text-5xl font-black mb-8 leading-tight tracking-tighter">
+                  Distributed IoT Nodes <br/><span className="text-emerald-400">Secure Handoffs.</span>
+               </h2>
+               <p className="text-slate-400 text-lg mb-10 font-medium">
+                  Our hardware stack integrates directly with the Ethereum consensus layer, ensuring that physical environmental readings (Temperature, Humidity, Location) are cryptographically signed before they ever hit the cloud.
+               </p>
+               <div className="grid grid-cols-2 gap-8">
+                  <div className="p-6 bg-white/5 rounded-2xl border border-white/5">
+                     <p className="text-4xl font-black mb-2 text-emerald-400">5.4k</p>
+                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Active Sensors</p>
+                  </div>
+                  <div className="p-6 bg-white/5 rounded-2xl border border-white/5">
+                     <p className="text-4xl font-black mb-2 text-emerald-400">99.9%</p>
+                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Network Uptime</p>
+                  </div>
+               </div>
+            </div>
+            <div className="order-1 lg:order-2">
+               <img 
+                 src="/hardware_mock.png" 
+                 alt="AgriTrust Hardware" 
+                 className="rounded-[3rem] shadow-2xl rotate-3 hover:rotate-0 transition-all duration-500"
+               />
+            </div>
+         </div>
       </section>
 
       {/* --- FOOTER --- */}

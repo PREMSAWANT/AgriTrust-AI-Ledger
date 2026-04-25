@@ -145,6 +145,45 @@ const FarmerDashboard = () => {
 
           {/* Quick Actions / IoT Card */}
           <div className="flex flex-col gap-6">
+            {/* Real-time Trust Gauge */}
+            <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm flex flex-col items-center text-center">
+               <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-8">Network Trust Score</h3>
+               <div className="relative w-48 h-48 flex items-center justify-center">
+                  <svg className="w-full h-full transform -rotate-90">
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="80"
+                      stroke="currentColor"
+                      strokeWidth="16"
+                      fill="transparent"
+                      className="text-slate-50"
+                    />
+                    <circle
+                      cx="96"
+                      cy="96"
+                      r="80"
+                      stroke="currentColor"
+                      strokeWidth="16"
+                      fill="transparent"
+                      strokeDasharray={2 * Math.PI * 80}
+                      strokeDashoffset={2 * Math.PI * 80 * (1 - (batches.length > 0 ? (batches.reduce((acc, curr) => acc + curr.trustScore, 0) / batches.length) : 99) / 100)}
+                      className="text-emerald-500 transition-all duration-1000 ease-out"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center">
+                    <span className="text-5xl font-black tracking-tighter text-slate-900">
+                      {(batches.length > 0 ? (batches.reduce((acc, curr) => acc + curr.trustScore, 0) / batches.length) : 99.2).toFixed(1)}%
+                    </span>
+                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Global Rank #14</span>
+                  </div>
+               </div>
+               <p className="mt-8 text-xs font-medium text-slate-500 leading-relaxed px-4">
+                 Your trust score is significantly higher than the regional average of **92.4%**.
+               </p>
+            </div>
+
             <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-2xl">
                <div className="absolute top-0 right-0 p-8 opacity-20">
                   <ShieldCheck size={120} />

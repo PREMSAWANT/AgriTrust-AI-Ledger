@@ -137,7 +137,12 @@ const DistributorPortal = () => {
                         </span>
                       </td>
                       <td className="p-6 text-right">
-                        <button className="text-sm font-black text-emerald-600 hover:underline">Update Log</button>
+                        <button 
+                          onClick={() => navigate('/dashboard/distributor/iot')}
+                          className="text-sm font-black text-emerald-600 hover:underline"
+                        >
+                          Update Log
+                        </button>
                       </td>
                     </tr>
                   ))}

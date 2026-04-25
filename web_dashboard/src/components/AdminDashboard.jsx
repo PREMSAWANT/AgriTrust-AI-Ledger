@@ -130,7 +130,35 @@ const AdminDashboard = () => {
           </div>
 
           {/* System Alerts Sidebar */}
-          <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col">
+          <div className="flex flex-col gap-6">
+            {/* Regional Activity Chart */}
+            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm p-8">
+               <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-8">Network Traffic by Region</h3>
+               <div className="space-y-6">
+                  {[
+                    { label: 'Maharashtra', val: 85, color: 'bg-emerald-500' },
+                    { label: 'Punjab', val: 62, color: 'bg-blue-500' },
+                    { label: 'Gujarat', val: 45, color: 'bg-purple-500' },
+                    { label: 'Karnataka', val: 38, color: 'bg-amber-500' }
+                  ].map((r, i) => (
+                    <div key={i}>
+                       <div className="flex justify-between items-center mb-2">
+                          <span className="text-xs font-black text-slate-700">{r.label}</span>
+                          <span className="text-xs font-black text-slate-400">{r.val}%</span>
+                       </div>
+                       <div className="w-full h-2 bg-slate-50 rounded-full overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${r.val}%` }}
+                            className={`h-full ${r.color} rounded-full`}
+                          />
+                       </div>
+                    </div>
+                  ))}
+               </div>
+            </div>
+
+            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col">
              <div className="p-8 border-b border-slate-100 flex items-center gap-3">
                 <AlertCircle className="text-red-500" size={24} />
                 <h3 className="text-xl font-black">Active System Alerts</h3>

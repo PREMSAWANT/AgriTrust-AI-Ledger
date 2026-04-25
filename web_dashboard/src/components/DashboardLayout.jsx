@@ -22,6 +22,14 @@ const DashboardLayout = ({ children, role, userName }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`/verify/${searchQuery.trim()}`);
+      setSearchQuery('');
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -114,13 +122,24 @@ const DashboardLayout = ({ children, role, userName }) => {
             <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-3 bg-slate-50 rounded-xl text-slate-400 hover:text-slate-600 transition-all">
               {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
-            <div className="hidden md:flex items-center gap-3 bg-slate-50 px-5 py-3 rounded-2xl border border-slate-100 w-96">
-              <Search size={18} className="text-slate-400" />
-              <input type="text" placeholder="Search transactions, batches..." className="bg-transparent border-none outline-none text-sm font-medium w-full" />
+            <div className="hidden md:flex items-center gap-3 bg-slate-50 px-5 py-3 rounded-2xl border border-slate-100 w-96 group focus-within:border-emerald-600 focus-within:bg-white transition-all">
+              <Search size={18} className="text-slate-400 group-focus-within:text-emerald-600" />
+              <input 
+                type="text" 
+                placeholder="Search batch ID (e.g. AGRI-123)..." 
+                className="bg-transparent border-none outline-none text-sm font-medium w-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearch}
+              />
             </div>
           </div>
 
           <div className="flex items-center gap-6">
+            <div className="hidden xl:flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-full border border-emerald-100">
+               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+               <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Mainnet Connected</span>
+            </div>
             <button className="relative p-3 bg-slate-50 rounded-xl text-slate-400 hover:text-slate-600 transition-all">
               <Bell size={20} />
               <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
