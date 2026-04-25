@@ -12,6 +12,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import Hardware from './components/Hardware';
 import Network from './components/Network';
+import Protocol from './components/Protocol';
 import NotFound from './components/NotFound';
 
 // Farmer Sub-pages
@@ -39,6 +40,7 @@ function App() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/hardware" element={<Hardware />} />
         <Route path="/network" element={<Network />} />
+        <Route path="/protocol" element={<Protocol />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/verify/:id" element={<VerifyProduct />} />

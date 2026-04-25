@@ -31,7 +31,7 @@ const LandingPage = () => {
           </div>
           
           <div className="hidden lg:flex items-center gap-10">
-            <a href="#features" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Protocol</a>
+            <Link to="/protocol" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Protocol</Link>
             <Link to="/network" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Network</Link>
             <Link to="/hardware" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Hardware</Link>
             <button 
@@ -72,7 +72,7 @@ const LandingPage = () => {
             >
               <div className="px-6 py-10 flex flex-col gap-6 text-center">
                 <Link to="/about" className="text-lg font-black text-slate-900">About Us</Link>
-                <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Protocol</a>
+                <Link to="/protocol" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Protocol</Link>
                 <Link to="/network" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Network</Link>
                 <Link to="/hardware" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Hardware</Link>
                 <button 
