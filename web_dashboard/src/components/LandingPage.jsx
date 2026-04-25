@@ -32,8 +32,8 @@ const LandingPage = () => {
           
           <div className="hidden lg:flex items-center gap-10">
             <a href="#features" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Protocol</a>
-            <a href="#network" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Network</a>
-            <a href="#hardware" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Hardware</a>
+            <Link to="/network" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Network</Link>
+            <Link to="/hardware" className="text-sm font-black text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">Hardware</Link>
             <button 
               onClick={handleAuthAction}
               className="text-sm font-black text-slate-900 hover:text-emerald-600 transition-all uppercase tracking-widest"
@@ -73,8 +73,8 @@ const LandingPage = () => {
               <div className="px-6 py-10 flex flex-col gap-6 text-center">
                 <Link to="/about" className="text-lg font-black text-slate-900">About Us</Link>
                 <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Protocol</a>
-                <a href="#network" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Network</a>
-                <a href="#hardware" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Hardware</a>
+                <Link to="/network" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Network</Link>
+                <Link to="/hardware" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-black text-slate-900">Hardware</Link>
                 <button 
                   onClick={handleAuthAction}
                   className="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black shadow-xl shadow-emerald-100"
