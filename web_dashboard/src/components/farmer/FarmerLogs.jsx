@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, Download, ExternalLink, Filter, Plus, X, Leaf, MapPin, Database } from 'lucide-react';
 import DashboardLayout from '../DashboardLayout';
 import { getBatches, createBatch } from '../../api';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const FarmerLogs = () => {
   const [logs, setLogs] = useState([]);
@@ -77,6 +79,46 @@ const FarmerLogs = () => {
     }
   };
 
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    
+    // Add Brand Header
+    doc.setFontSize(22);
+    doc.setTextColor(16, 185, 129); // Emerald-600
+    doc.text('AgriTrust Provenance Audit', 14, 20);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 28);
+    doc.text(`Farmer: ${user.name}`, 14, 34);
+    
+    // Create Table
+    const tableColumn = ["Transaction ID", "Action", "Crop", "Date", "Status"];
+    const tableRows = [];
+
+    logs.forEach(log => {
+      const logData = [
+        log.id,
+        log.action,
+        log.crop,
+        log.time,
+        log.status
+      ];
+      tableRows.push(logData);
+    });
+
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 45,
+      theme: 'grid',
+      headStyles: { fillColor: [16, 185, 129] },
+      styles: { fontSize: 8 }
+    });
+
+    doc.save(`AgriTrust_Audit_${user.name.replace(/\s+/g, '_')}.pdf`);
+  };
+
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   return (
@@ -88,7 +130,10 @@ const FarmerLogs = () => {
             <p className="text-slate-500 font-medium">Immutable blockchain transaction history for your farm.</p>
           </div>
           <div className="flex gap-4">
-            <button className="hidden md:flex btn-secondary px-8 py-4 shadow-xl shadow-slate-100 items-center gap-3">
+            <button 
+              onClick={exportToPDF}
+              className="hidden md:flex btn-secondary px-8 py-4 shadow-xl shadow-slate-100 items-center gap-3"
+            >
               <Download size={20} /> Export Audit Log
             </button>
             <button 
