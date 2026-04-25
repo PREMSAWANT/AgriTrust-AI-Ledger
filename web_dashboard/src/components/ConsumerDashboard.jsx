@@ -16,7 +16,7 @@ import {
 import DashboardLayout from './DashboardLayout';
 import { useNavigate } from 'react-router-dom';
 import { getBatches } from '../api';
-...
+
 const ConsumerDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
