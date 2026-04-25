@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, 
   TrendingUp, 
@@ -167,14 +167,14 @@ const FarmerDashboard = () => {
                       strokeWidth="16"
                       fill="transparent"
                       strokeDasharray={2 * Math.PI * 80}
-                      strokeDashoffset={2 * Math.PI * 80 * (1 - (batches.length > 0 ? (batches.reduce((acc, curr) => acc + curr.trustScore, 0) / batches.length) : 99) / 100)}
+                      strokeDashoffset={2 * Math.PI * 80 * (1 - (batches.length > 0 ? (batches.reduce((acc, curr) => acc + (curr.trustScore || 0), 0) / batches.length) : 99) / 100)}
                       className="text-emerald-500 transition-all duration-1000 ease-out"
                       strokeLinecap="round"
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center">
                     <span className="text-5xl font-black tracking-tighter text-slate-900">
-                      {(batches.length > 0 ? (batches.reduce((acc, curr) => acc + curr.trustScore, 0) / batches.length) : 99.2).toFixed(1)}%
+                      {(batches.length > 0 ? (batches.reduce((acc, curr) => acc + (curr.trustScore || 0), 0) / batches.length) : 99.2).toFixed(1)}%
                     </span>
                     <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Global Rank #14</span>
                   </div>
