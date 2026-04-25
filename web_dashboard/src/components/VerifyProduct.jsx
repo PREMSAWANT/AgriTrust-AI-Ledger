@@ -59,15 +59,21 @@ const VerifyProduct = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 p-4 md:p-6 flex flex-col items-center justify-start md:justify-center">
-      <Link to="/" className="mb-6 mt-4 self-start md:self-center text-slate-500 flex items-center gap-2 hover:text-white transition-all">
+    <div className="min-h-screen bg-slate-950 p-4 md:p-6 flex flex-col items-center justify-start md:justify-center relative overflow-hidden">
+      {/* Cinematic Background Overlay */}
+      <div className="absolute inset-0 z-0">
+         <img src="/verify_bg.png" className="w-full h-full object-cover opacity-20" alt="Provenance Background" />
+         <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/80 to-slate-950"></div>
+      </div>
+
+      <Link to="/" className="mb-6 mt-4 self-start md:self-center text-slate-500 flex items-center gap-2 hover:text-white transition-all relative z-10">
         <ArrowLeft size={16} /> Home
       </Link>
       
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="glass-card w-full max-w-2xl overflow-hidden mb-10"
+        className="glass-card w-full max-w-2xl overflow-hidden mb-10 relative z-10"
       >
         {/* Verification Banner */}
         <div className="bg-emerald-500/20 p-6 md:p-8 border-b border-emerald-500/30 flex flex-col items-center gap-4 text-center">
