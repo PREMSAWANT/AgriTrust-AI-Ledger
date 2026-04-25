@@ -21,7 +21,7 @@ exports.addTrackingEntry = async (req, res) => {
             location: {
                 type: 'Point',
                 coordinates: [0, 0],
-                description: location
+                description: location.description || location
             },
             environmentalData: {
                 temperature,
