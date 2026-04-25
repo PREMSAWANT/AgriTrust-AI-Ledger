@@ -14,9 +14,11 @@ import {
   Plus
 } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
+import { useNavigate } from 'react-router-dom';
 import { getBatches } from '../api';
-
+...
 const ConsumerDashboard = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || '{}'));
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +52,10 @@ const ConsumerDashboard = () => {
             <h1 className="text-4xl font-black tracking-tighter mb-2">My AgriTrust</h1>
             <p className="text-slate-500 font-medium">Tracking your personalized food provenance journey.</p>
           </div>
-          <button className="btn-primary px-8 py-4 shadow-xl shadow-emerald-100 flex items-center gap-3">
+          <button 
+            onClick={() => navigate('/dashboard/consumer/history')}
+            className="btn-primary px-8 py-4 shadow-xl shadow-emerald-100 flex items-center gap-3"
+          >
             <Scan size={20} /> Scan New Batch
           </button>
         </div>
@@ -103,7 +108,44 @@ const ConsumerDashboard = () => {
 
            {/* Rewards / Community Card */}
            <div className="flex flex-col gap-6">
-              <div className="bg-emerald-600 rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-2xl">
+            {/* Sustainability Impact Card */}
+            <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm flex flex-col items-center text-center">
+               <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">Carbon Neutrality Impact</h3>
+               <div className="relative w-40 h-40 flex items-center justify-center">
+                  <svg className="w-full h-full transform -rotate-90">
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="70"
+                      stroke="currentColor"
+                      strokeWidth="12"
+                      fill="transparent"
+                      className="text-slate-50"
+                    />
+                    <circle
+                      cx="80"
+                      cy="80"
+                      r="70"
+                      stroke="currentColor"
+                      strokeWidth="12"
+                      fill="transparent"
+                      strokeDasharray={2 * Math.PI * 70}
+                      strokeDashoffset={2 * Math.PI * 70 * (1 - 0.78)}
+                      className="text-blue-500 transition-all duration-1000 ease-out"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute flex flex-col items-center">
+                    <span className="text-4xl font-black tracking-tighter text-slate-900">78%</span>
+                    <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">Eco-Score</span>
+                  </div>
+               </div>
+               <p className="mt-8 text-xs font-medium text-slate-500 leading-relaxed px-2">
+                 Your purchases have supported **12 local organic farms** this month.
+               </p>
+            </div>
+
+            <div className="bg-emerald-600 rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-2xl">
                  <div className="absolute top-0 right-0 p-8 opacity-20">
                     <Star size={100} />
                  </div>

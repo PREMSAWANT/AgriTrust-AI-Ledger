@@ -51,13 +51,13 @@ const AboutUs = () => {
           <h2 className="text-4xl font-black mb-12">The AgriTrust Core Team</h2>
           <div className="flex flex-wrap justify-center gap-20">
             {[
-              { name: 'Dr. Arpan Mehta', role: 'Blockchain Architect', loc: 'Mumbai' },
-              { name: 'Suhani Singh', role: 'Head of Agronomy', loc: 'Nashik' },
-              { name: 'Vikram Rao', role: 'IoT Engineering', loc: 'Bangalore' }
+              { name: 'Dr. Arpan Mehta', role: 'Blockchain Architect', loc: 'Mumbai', img: '/team3.png' },
+              { name: 'Suhani Singh', role: 'Head of Agronomy', loc: 'Nashik', img: '/team2.png' },
+              { name: 'Vikram Rao', role: 'IoT Engineering', loc: 'Bangalore', img: '/team1.png' }
             ].map((member, i) => (
-              <div key={i} className="text-center">
-                <div className="w-32 h-32 bg-slate-100 rounded-full mx-auto mb-6 flex items-center justify-center border-4 border-emerald-50 shadow-lg">
-                   <Users size={40} className="text-slate-400" />
+              <div key={i} className="text-center group">
+                <div className="w-40 h-40 rounded-full mx-auto mb-6 overflow-hidden border-4 border-white shadow-xl group-hover:border-emerald-500 transition-all">
+                   <img src={member.img} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500" />
                 </div>
                 <h4 className="font-black text-xl text-slate-900">{member.name}</h4>
                 <p className="text-emerald-600 font-bold text-sm uppercase tracking-widest">{member.role}</p>
