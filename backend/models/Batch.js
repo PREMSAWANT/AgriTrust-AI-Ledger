@@ -22,13 +22,16 @@ const BatchSchema = new mongoose.Schema({
     location: {
         type: {
             type: String,
-            enum: ['Point']
+            enum: ['Point'],
+            default: 'Point'
         },
         coordinates: {
             type: [Number],
-            index: '2dsphere'
+            index: '2dsphere',
+            default: [0, 0]
         },
-        farmName: String
+        farmName: String,
+        description: String
     },
     trustScore: {
         type: Number,
