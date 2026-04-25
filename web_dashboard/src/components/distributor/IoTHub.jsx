@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Thermometer, Droplets, Activity, RefreshCw, AlertTriangle, ShieldCheck, X, Package, MapPin, ChevronDown } from 'lucide-react';
+import { Thermometer, Droplets, Activity, RefreshCw, AlertTriangle, ShieldCheck, X, Package, MapPin, ChevronDown, Truck } from 'lucide-react';
 import DashboardLayout from '../DashboardLayout';
 import { getBatches, addTracking } from '../../api';
 
@@ -122,7 +122,7 @@ const IoTHub = () => {
                     placeholder="e.g. Mumbai Logistics Hub"
                     className="input-premium pl-12"
                     value={updateData.description}
-                    onChange={e => setFormData({...updateData, description: e.target.value})}
+                    onChange={e => setUpdateData({...updateData, description: e.target.value})}
                   />
                   <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 </div>

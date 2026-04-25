@@ -280,9 +280,11 @@ const LandingPage = () => {
           
           <div className="flex flex-wrap justify-center gap-8 md:gap-10">
             <Link to="/about" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">About Us</Link>
-            <Link to="/privacy" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Privacy Policy</Link>
-            <Link to="/terms" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Terms of Service</Link>
-            <a href="#" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Smart Contracts</a>
+            <Link to="/protocol" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Protocol</Link>
+            <Link to="/network" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Network</Link>
+            <Link to="/hardware" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Hardware</Link>
+            <Link to="/privacy" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Privacy</Link>
+            <Link to="/terms" className="text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">Terms</Link>
           </div>
 
           <p className="text-xs font-black text-slate-400 tracking-widest uppercase">
